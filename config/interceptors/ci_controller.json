@@ -1,0 +1,32 @@
+{
+	"define": {
+		"rule": {
+			"type": "around",
+			"field": "rule_manager",
+			"method": "handle"
+		},
+		"transaction":	{
+			"type": "around",
+			"field": "transaction_manager",
+			"method": "handle",
+			"tag": "error"
+		},
+		"security": {
+			"type": "before",
+			"field": "security_manager",
+			"method": "handle"
+		},
+		"audit_before": {
+			"type": "before",
+			"field": "audit_manager",
+			"method": "audit_before"
+		},
+		"audit_after": {
+			"type": "after",
+			"field": "audit_manager",
+			"method": "audit_after"
+		}
+	},
+	"interceptors": {
+	}
+}

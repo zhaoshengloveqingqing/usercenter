@@ -1,0 +1,82 @@
+;*******************************************************************************
+;
+; The Rules for login processing
+;
+; @author Jack
+; @date Sat Dec 20 16:58:48 2014
+;
+;*******************************************************************************
+
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common rules
+
+;===============================================================================
+;
+; The rules for validation
+;
+;===============================================================================
+
+(defrule callback-is-needed
+	(declare (salience ?*highest*))
+	(or
+	 	(not (args "callback" ?))
+		(args "callback" nil)
+	)
+	=>
+	(display_error "Callback is needed!!!")
+)
+
+;===============================================================================
+;
+; The rules for login process
+;
+;===============================================================================
+
+(defrule if-we-found-only-one-uid-update-it-to-login-model
+	?l <- (Login_User (uid ?uid&~nil))
+    (test (= (length$ (find-all-facts ((?l Login_User)) (= 1 1))) 1))
+	?model <- (Login_Model (uid nil))
+	=>
+	(modify ?model (uid ?uid))
+	(retract ?l)
+)
+
+(defrule if-we-found-more-than-one-uid-then-fail
+    (test (> (length$ (find-all-facts ((?l Login_User)) (= 1 1))) 1))
+	?model <- (Login_Model (uid nil))
+	=>
+	(display_error "We are not supporting merging yet!!!")
+)
+
+(defrule if-user-has-uid-then-make-him-login
+	?model <- (Login_Model (uid ?uid&~nil) (token nil) (is_loggedin FALSE))
+	=>
+	(modify ?model (token (php_call "gen_token" ?uid)))
+)
+
+(defrule process-after-the-user-is-logined-successfully
+	?model <- (Login_Model (uid ?uid&~nil) (token ?token&~nil) (is_loggedin FALSE))
+	?args <- (args "callback" ?callback)
+	=>
+	(session_set ?*token_name* ?token)
+	(cookie_set ?*token_name* ?token ?*cookie_expire*)
+	(php_call "store_token" ?uid (php_call "get_appid") ?token)
+	(modify ?model (is_loggedin TRUE))
+
+	;Remove all the triggers
+	;(retract ?model)
+)
+
+(defrule redirect-user-if-logged-in
+	(declare (salience ?*high*))
+	?model <- (Login_Model (token ?token&~nil) (is_loggedin TRUE))
+	?args <- (args "callback" ?callback)
+	=>
+	(session_set ?*token_name* ?token)
+	(php_call "login_redirect" ?callback ?token)
+)

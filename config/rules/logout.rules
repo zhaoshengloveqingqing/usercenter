@@ -1,0 +1,12 @@
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common functions
+(defglobal ?*token_name* = "pinet_token") 
+
+;Store the old callback into the session, so when after the login, can
+;redirect the user to right position
+(defglobal ?*orig_callback* = "pinet_callback") 

@@ -1,0 +1,7 @@
+{
+	"author": "Jake <jake.xu@pinet.co>",
+	"date": "Mon Dec 18 14:00:42 2014",
+	"version": "1.0",
+	"name": "pinet.oauth_weibo",
+	"doc":"The OAuth login way of Weibo"
+}

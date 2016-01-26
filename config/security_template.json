@@ -1,0 +1,73 @@
+{
+	"default": {
+		"actions": [
+			{
+				"controller": "/.*/",
+				"method": "/.*/",
+				"operation": "allow"
+			},
+			{
+				"controller": "Welcome",
+				"method": "index",
+				"operation": "allow"
+			},
+			{
+				"controller": "IBox",
+				"method": "index",
+				"operation": "allow"
+			},
+            {
+                "controller": "IBox",
+                "method": "user",
+                "operation": "allow"
+            },
+            {
+                "controller": "Network",
+                "method": "index",
+                "operation": "allow"
+            }
+		],
+		"views": [
+			{
+				"controller": "Welcome",
+				"method": "index",
+				"columns": [
+					"users.email_address"
+				]
+			},
+			{
+				"controller": "Welcome",
+				"method": "user",
+				"fields": {
+					"password": "disabled",
+					"email_address": "readonly",
+					"group": "none",
+					"id": "disabled"
+				}
+			}
+		]
+	},
+	"user": {
+		"actions": [
+			{
+				"controller": "/.*/",
+				"method": "/.*/",
+				"operation": "allow"
+			}
+		],
+		"views": [
+		]
+	},
+	"admin": {
+		"actions": [
+			{
+				"controller": "/.*/",
+				"method": "/.*/",
+				"operation": "allow",
+				"tag":"just test"
+			}
+		],
+		"views": [
+		]
+	}
+}

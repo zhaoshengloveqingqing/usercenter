@@ -1,0 +1,13 @@
+{
+	"define": {
+	},
+	"interceptors": {
+		"rule" : {
+			"pattern": ["/.*/"]
+		},
+		"audit_before": {
+			"pattern": ["/audit/", "/edit/"],
+			"tag": ""
+		}
+	}
+}

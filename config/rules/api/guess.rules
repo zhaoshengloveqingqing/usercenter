@@ -1,0 +1,139 @@
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules" "application/config/rules/api/sns.rules") ; Load the common functions
+
+;===============================================================================
+;
+; User rules
+;
+;===============================================================================
+
+(defrule if-has-uid-assert-a-user
+    ?args <- (Guess_Args (uid ?uid&~nil))
+    =>
+    (assert (Login_User (uid ?uid)))
+    (modify ?args (uid nil))
+)
+
+;===============================================================================
+;
+; Mobile rules
+;
+;===============================================================================
+
+(defrule if-can-find-user-by-mobile-then-make-it
+    ?args <- (Guess_Args (mobile ?mobile&~nil))
+	(test (php_call "mobile_exists" ?mobile))
+    =>
+    (assert (Login_User (uid (php_call "get_uid_by_mobile" ?mobile))))
+	(retract ?args)
+)
+
+;===============================================================================
+;
+; Device rules
+;
+;===============================================================================
+
+(defrule if-has-mac-assert-a-device
+	?args <- (Guess_Args (mac ?mac&~nil))
+	=>
+	(assert (Login_Device (mac ?mac)))
+	(modify ?args (mac nil))
+)
+
+(defrule create-device-if-device-is-not-recorded
+	?device <- (Login_Device (mac ?mac&~nil) (id nil))
+	(test (not (php_call "device_exists" ?mac)))
+	=>
+	(modify ?device (id (php_call "create_device" ?mac)) (mac ?mac))
+)
+
+(defrule find-device-if-device-is-there
+	?device <- (Login_Device (mac ?mac&~nil) (uid nil) (id nil))
+	(test (php_call "device_exists" ?mac))
+	=>
+	(modify ?device (uid (php_call "get_device_uid" ?mac)) (id (php_call "get_device_id" ?mac)))
+)
+
+(defrule a-user-is-found-if-the-device-has-uid
+	?device <- (Login_Device (mac ?mac&~nil) (uid ?uid&~nil))
+	(not (Login_User (uid ?uid)))
+	=>
+	(assert (Login_User (uid ?uid)))
+)
+
+;===============================================================================
+;
+; OAuth rules
+;
+;===============================================================================
+
+(defrule if-has-oid-must-have-type
+	(declare (salience 1))
+	?args <- (Guess_Args (oid ?oid&~nil) (type nil))
+	=>
+	(display_error "The type of the oauth account is needed!!!")
+)
+
+(defrule if-has-oid-must-have-detail
+	(declare (salience 1))
+	?args <- (Guess_Args (oid ?oid&~nil) (detail nil))
+	=>
+	(display_error "The detail of the oauth account is needed!!!")
+)
+
+(defrule if-has-oid-assert-a-oauth-user
+	?args <- (Guess_Args (type ?type&~nil) (detail ?detail&~nil))
+	=>
+	(assert (OAuth_User (type ?type) (detail ?detail)))
+	(modify ?args (oid nil) (type nil) (detail nil))
+)
+
+(defrule create-sso-account-if-account-is-not-recorded
+	?account <- (OAuth_User (oid ?oid&~nil) (id nil) (type ?type) (detail ?detail))
+	(test (not (php_call "oauth_account_exists" ?oid)))
+	(not (detail ? ?))
+	=>
+	(modify ?account (id (php_call "create_oauth_account" ?account)) (oid ?oid))
+)
+
+(defrule find-account-if-account-is-there
+	?account <- (OAuth_User (oid ?oid&~nil) (id nil))
+	(test (php_call "oauth_account_exists" ?oid))
+	=>
+	(modify ?account (id (php_call "get_oauth_account_id" ?oid)) (uid (php_call "get_oauth_account_uid" ?oid)))
+)
+
+(defrule a-user-is-found-if-the-oauth-user-has-uid
+	?device <- (OAuth_User (oid ?oid&~nil) (uid ?uid&~nil))
+	=>
+	(assert (Login_User (uid ?uid)))
+)
+
+;===============================================================================
+;
+; If user is found, let's update the account and the device's owner
+;
+;===============================================================================
+
+(defrule if-user-is-found-and-the-device-have-no-owner-update-the-user-as-the-owner
+	(Login_User (uid ?uid&~nil))
+ 	?device <- (Login_Device (id ?id) (uid nil))
+ 	=>
+ 	(php_call "update_device_owner" ?id ?uid)
+ 	(modify ?device (uid ?uid))
+ )
+
+(defrule if-user-is-found-and-the-account-have-no-owner-update-the-user-as-the-owner
+    (declare (salience ?*high*))
+	(Login_User (uid ?uid&~nil))
+	?account <- (OAuth_User (id ?id) (uid nil))
+	=>
+	(php_call "update_oauth_account_owner" ?id ?uid)
+	(modify ?account (uid ?uid))
+)

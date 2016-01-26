@@ -1,0 +1,129 @@
+.top_navbar {
+	line-height: 35px;
+	height: 35px;
+	padding: 0 5px;
+	span{
+		float: left;
+		&:last-child {
+			float: right;
+			a {
+				color: #444444;
+			}
+		}
+	}
+}
+#login{
+	width: 94%;
+	margin: 0 auto;
+	margin-top: 40px;
+	text-align: center;
+	.control-group.form-group {
+		border-bottom: 1px solid #e6e6e6;
+		margin-bottom: 5px;
+		line-height: 45px;
+		height: 45px;
+		.input-group{
+			height: 45px;
+		}
+		label {
+			float: left;
+			line-height: 43px;
+			width: 30%;
+			text-align: left;
+		}
+		input {
+			display: inline-block;
+			width: 68%;
+			height: 43px;
+			padding: 0;
+			border: none;
+			box-shadow: none;
+		}
+	}
+
+	.otjr{
+		margin-top: 5px;
+		margin-bottom: 50px;
+		div{
+			font-size: 14px;
+			display: inline-block;
+		}
+		.register {
+			float: left;
+			color: #777777;
+		}
+		.get-code{
+			float: right;
+			color: #F19A28;
+		}
+		&.help-block {
+			display: none;
+		}
+	}
+
+}
+.action{
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	input[disabled='disabled']{
+		background: #16AF69;
+	}
+	.btn:hover {
+		color: #ffffff;
+	}
+  	input[type=button]{
+	  margin:20px auto;
+	}
+}
+.other_way{
+	width: 94%;
+	margin: 0 auto;
+	margin-top: 60px;
+	text-align: center;
+	ul#navlist{
+		margin:0;
+		padding:0;
+		padding-bottom: 13px;
+		margin-bottom: 50px;
+		li{
+			float: left;
+			list-style:none;
+			height: 30px;
+			border: 0px solid #e6e6e6;
+			width: 100%;
+			span{
+				background: #ffffff;
+				padding: 0 8px;
+			}
+			&.list1{
+				border-bottom: 1px solid #e6e6e6;
+				width: 100%;
+				margin-bottom: -15px;
+			}
+		}
+		a{
+			display: block;
+			color: #666;
+			text-decoration: none;
+			padding: 6px 5px;
+			width: 100%;
+			text-align: center;
+		}
+	}
+	.other_way_login {
+		width: 50%;
+		margin: 10px auto;
+		a{
+			width: 40%;
+			margin: 0 5%;
+			float: left;
+			.responsive{
+				width: 100%;
+				max-height: 60px;
+				max-width: 60px;
+			}
+		}
+	}
+}
+

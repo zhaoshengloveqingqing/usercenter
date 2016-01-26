@@ -1,0 +1,15 @@
+(defrule if-has-nick-update-the-nickname
+	?n <- (nick ?nick)
+	?a <- (Test_Account (nickname nil))
+	=>
+	(modify ?a (nickname ?nick))
+	(retract ?n)
+)
+
+(defrule if-has-profile-img-update-the-profile-image
+	?i <- (profile_img ?image)
+	?a <- (Test_Account (profile_image nil))
+	=>
+	(modify ?a (profile_image ?image))
+	(retract ?i)
+)

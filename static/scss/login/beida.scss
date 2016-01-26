@@ -1,0 +1,223 @@
+@mixin responsive_login_beida($args...) {
+	$max-screen-width: 720px;
+  html, body {
+    height: 100%;
+    font-family: 'helvetica neue','helvetica','Arial','Microsoft YaHei';
+    }
+  body{
+    background: url(site_url('responsive/size/normal/signin-bg-mobile.jpg')) no-repeat top center;
+    background-size: 100% 100%;
+     background-attachment: fixed;
+      #tip {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        [class*=col] {
+          padding: 0;
+          >.alert {
+            margin: 0;
+            padding-top: res(15px);
+            padding-bottom: res(15px);
+            border: 0;
+            border-radius: 0;
+            min-height: res(40px);
+            background-color: $pinet-cyan;
+            font-size: res(26px);
+            color: #ffffff;
+          }
+        }
+      }
+    .container {
+      width: 100%;
+      margin: 0;
+      padding-top: res(48px);
+      padding-left: res(45px);
+      padding-right: res(45px);
+      header {
+        h1 {
+          padding-top: res(55px);
+          padding-left: res(72px);
+          margin: 0px;
+          font-size: res(30px);
+          color: #fff;
+          span {
+            display: block;
+            font-size: res(38px);
+            padding-bottom: res(33.7px);
+          }
+        }
+        margin-bottom: 0px;
+      }
+      section {
+          &#sms-form {
+			padding: 0;
+            .btn {
+              color: #ffffff;
+            }
+            > .row {
+                >[class*=col] {
+                    padding: 0;
+                }
+            }
+            form {
+              width: 100%;
+              padding-top: res(30px);
+              .form-group {
+                width: 100%;
+                padding-bottom: res(45px);
+                margin: 0;
+                .code {
+                    overflow: hidden;
+                    // width: 405px / @mobile-max-width * @width;
+                    width: 64.2%;
+                    float: left;
+                  .input-group-addon:first-child {
+                    background: #ffffff;
+                    border: 0;
+                  }
+                  input {
+                    border: 0;
+                  }
+                }
+              }
+              .input-group {
+                height: res(90px);
+                border-radius: 4px;
+                background-color: #1b2d2d;
+                .input-group-addon {
+                    padding: res(18px);
+                    padding-right: res(18px);
+                    img {
+                        width: res(54px);
+                        height: res(54px);
+                    }
+                }
+                .input-group-addon, .form-control{
+                  background-color: transparent !important;
+                  border-color: transparent !important;
+                  border: 0;
+                }
+                input.form-control {
+                    padding: 0;
+                    height: 100%;
+                   line-height: res(90px);
+                    font-size: res(31.5px);
+                    padding-left: res(9px);
+                }
+              }
+              .btn {
+                color: #4d4d4d;
+                background-color: #ffffff;
+                float: right;
+                padding: 0;
+                // width: 193px / @mobile-max-width * @width;
+                height: res(90px);
+                line-height: res(90px);
+                &[disabled=disabled] {
+                  border: 0 !important;
+                }
+              }
+              #send {
+              	width: 31.8%;
+              	margin-left: 4%;
+              }
+              i {
+                width: res(12px);
+              }
+              .submit-button {
+                width: 100%;
+                color: #ffffff;
+                background-color: $pinet-cyan;
+                &:hover {
+                  background-color: $pinet-cyan-hover;
+                }
+              }
+            }
+          }
+          #login {
+            color: #4d4d4d;
+            padding: 0;
+            .mobile-head {
+                font-size: res(27px);
+                p {
+                    margin: 0;
+                    color: #ffffff;
+                }
+            }
+            #method {
+                      padding-top: res(45px);
+            }
+            ul#buttons {
+              	padding-top: res(45px);
+                > [class*=col] {
+                    padding: 0;
+                }
+            }
+            a {
+				$width: res(420px);
+              	display: inline-block;
+				width: res(420px);
+				height: res(420px);
+				font-size: res(150px);
+				margin: -moz-calc( (100% - #{$width}) / 2  );
+				margin: -webkit-calc( (100% - #{$width}) / 2  );
+				margin: calc( (100% - #{$width}) / 2  );
+				line-height: res(560px);
+				padding: 0;
+				text-align: center !important;
+              	color: transparent;
+              	text-decoration: none;
+              	background-size: 100% 100%;
+              	border-radius: 10px;
+              	cursor: pointer;
+            }
+            a.btn {
+              padding-left: 0;
+              padding-right: 0;
+              padding-bottom: 0;
+            }
+
+            $cwvs: res(420px);
+            a.wechat_button {
+                background: url(site_url('responsive/size/#{$cwvs}/signin-let-me-online-wechat-mobile.png'))no-repeat top center;
+            }
+            a.weibo_button {
+                background: url(site_url('responsive/size/#{$cwvs}/signin-let-me-online-weibo-mobile.png')) no-repeat top center;
+            }
+            a.qq_button {
+                background: url(site_url('responsive/size/#{$cwvs}/signin-let-me-online-qq-mobile.png')) no-repeat top center;
+            }
+            a.yixin_button {
+                background: url(site_url('responsive/size/#{$cwvs}/signin-let-me-online-yixin-mobile.png')) no-repeat top center;
+            }
+          }
+      }
+    }
+    footer {
+        position: relative;
+        right: res(40px);
+        bottom: 0;
+        #legal {
+          font-size: res(16px);
+          color: #fff;
+          text-align: right;
+          color: rgba(255, 255, 255, 0.5);
+          margin: res(18px);
+          margin-top: res(42px);
+         @media (max-width: 480px) {
+                      margin-top: res(50px);
+           }
+          margin-right: 0;
+          padding: 0;
+          a {
+            padding-left: res(10px);
+            padding-right: res(10px);
+            figure {
+              display: inline-block;
+            }
+          }
+        }
+    }
+  }
+}

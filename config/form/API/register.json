@@ -1,0 +1,130 @@
+[
+	{
+		"field": "name",
+		"label": "Name",
+        "rules": {
+            "maxlength": 20,
+            "required": ""
+        }
+	},
+	{
+		"field": "email_address",
+		"label": "Email",
+        "rules": {
+            "maxlength": 60,
+            "email": "",
+            "required": ""
+        }
+	}
+	,{
+		"field": "username",
+		"label": "Username",
+        "rules": {
+            "maxlength": 20,
+            "required": ""
+        }
+	},
+	{
+		"field": "password",
+		"label": "Password",
+        "rules": {
+            "password": "",
+            "maxlength": 16,
+            "required": ""
+        }
+	}
+	,
+	{
+		"field": "mobile",
+		"label": "Phone",
+        "rules": {
+            "maxlength": 15,
+            "required": ""
+        }
+	},
+	{
+		"field": "password_confirm",
+		"label": "Confirm",
+        "rules": {
+            "password": "",
+            "maxlength": 16,
+            "required": ""
+        }
+	}
+	,
+	{
+		"field": "birthday",
+		"label": "Date",
+        "rules": ["required"]
+	},
+    {
+        "field": "sex",
+        "label": "Sex",
+        "rules": ["required"]
+    }
+	,
+	{
+		"field": "contact_profile",
+		"label": "Introduction",
+        "rules": {
+            "maxlength": 500,
+            "required": ""
+        }
+	},
+    {
+        "field": "contact_company",
+        "label": "Company",
+        "rules": {
+            "maxlength": 100,
+            "required": ""
+        }
+    }
+	,
+	{
+		"field": "contact_street",
+		"label": "Street",
+        "rules": {
+            "maxlength": 300,
+            "required": ""
+        }
+	},
+	{
+		"field": "contact_city",
+		"label": "City",
+        "rules": {
+            "maxlength": 30,
+            "required": ""
+        }
+	}
+	,
+	{
+		"field": "contact_postalcode",
+		"label": "Postcode",
+        "rules": {
+            "maxlength": 6,
+            "required": ""
+        }
+	},
+	{
+		"field": "contact_province",
+		"label": "Province",
+        "rules": {
+            "maxlength": 10,
+            "required": ""
+        }
+	}
+	,
+	{
+		"field": "contact_country",
+		"label": "Country",
+        "rules": {
+            "maxlength": 10,
+            "required": ""
+        }
+	}
+	,
+	{
+		"field": "id",
+		"label": ""
+	}
+]

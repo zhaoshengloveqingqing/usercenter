@@ -1,0 +1,92 @@
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules" "application/config/rules/api/login/username.rules"
+	"application/config/rules/api/guess.rules" "application/config/rules/api/login/oauth.rules"
+	"application/config/rules/api/login/mobile.rules" "application/config/rules/api/process.rules") ; Load the rules
+
+;===============================================================================
+;
+; The rules for validation
+;
+;===============================================================================
+(defrule must-have-appid-arg
+	(declare (salience ?*highest*))
+	(not (args "appid" ?))
+	=>
+	(display_error "Must have appid as request parameter!!!")
+)
+
+(defrule set-default-template-if-no-template-is-set
+	?l <- (args "template" nil)
+	=>
+	(retract ?l)
+)
+
+(defrule add-default-template-if-no-template-is-there
+	(not (args "template" ?))
+	=>
+	(assert (args "template" "default"))
+)
+
+;===============================================================================
+;
+; The rules for login process
+;
+;===============================================================================
+(defrule store-the-args-if-not-login-by-myself
+    (declare (salience ?*high*))
+    (args "appid" ~"-1")
+    =>
+	;Store the login args when render the login page, since the login page may redirect the request to this process again.
+	(php_call "store_login_args")
+)
+
+(defrule render-the-login-page-if-login-needed
+	(declare (salience ?*low*))
+	?l <- (login needed)
+	?model <- (Login_Model (is_loggedin FALSE))
+	(args "callback" ?callback)
+	=>
+	;Remove all the triggers
+	(retract ?l)
+
+	;Record the callback to session
+	(session_set ?*orig_callback* ?callback)
+
+	;Forward to the login page
+	(forward "show_login")
+
+	(assert (login page shown))
+)
+
+;===============================================================================
+;
+; The rules for test for login
+;
+;===============================================================================
+(defrule user-is-logged-in-if-token-in-the-cookie-is-valid
+	?model <- (Login_Model (token nil) (is_loggedin FALSE))
+	(test (php_call "token_is_valid" (cookie ?*token_name*)))
+	=>
+	(modify ?model (token (cookie ?*token_name*)) (is_loggedin TRUE))
+)
+
+(defrule user-is-logged-in-when-session-has-token
+	?model <- (Login_Model (token nil) (is_loggedin FALSE))
+	(test (php_call "token_is_valid" (session_get ?*token_name*)))
+	=>
+	;Set the token to the model
+	(modify ?model (token (session_get ?*token_name*)) (is_loggedin TRUE))
+)
+
+(defrule user-need-login-if-token-in-the-cookie-is-invalid
+	(not (login page shown))
+	?model <- (Login_Model (uid nil) (token nil) (is_loggedin FALSE))
+	(test (not (php_call "token_is_valid" (cookie ?*token_name*))))
+	=>
+	(assert (login needed))
+)

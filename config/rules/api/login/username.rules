@@ -1,0 +1,75 @@
+;*******************************************************************************
+;
+; The Rules for username and password login
+;
+; @author Jack
+; @date Sat Dec 20 16:58:37 2014
+;
+;*******************************************************************************
+
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common rules
+
+;===============================================================================
+;
+; The rules for validation
+;
+;===============================================================================
+
+(defrule update-password-to-hash
+	(args "username" ?user&~nil)
+	?password_args <- (args "password" ?pass&~nil)
+	(not (password is hashed))
+	=>
+	(retract ?password_args)
+	(assert (args "password" (php_call "hash_password" ?pass)))
+	(assert (password is hashed))
+)
+
+(defrule username-must-must-be-valid
+	?l <- (login needed)
+	?model <- (Login_Model)
+	?username_args <- (args "username" ?user&~nil)
+	?password_args <- (args "password" ?pass&~nil)
+	(test (not (php_call "username_is_valid" ?user)))
+	=>
+	(retract ?l ?model ?username_args ?password_args)
+	(display_error "Username" ?user "is not found!")
+)
+
+(defrule password-must-must-be-valid
+	?l <- (login needed)
+	?model <- (Login_Model)
+	?username_args <- (args "username" ?user&~nil)
+	?password_args <- (args "password" ?pass&~nil)
+	(password is hashed)
+	(test (php_call "username_is_valid" ?user))
+	(test (not (php_call "password_is_valid" ?user ?pass)))
+	=>
+	(retract ?l ?model ?username_args ?password_args)
+	(display_error "Password is not match the username" ?user "!")
+)
+
+;===============================================================================
+;
+; The rules for login
+;
+;===============================================================================
+
+(defrule login-using-username-and-password
+	?l <- (login needed)
+	?model <- (Login_Model)
+	?username_args <- (args "username" ?user&~nil)
+	?password_args <- (args "password" ?pass&~nil)
+	?h <- (password is hashed)
+	(test (php_call "username_is_valid" ?user))
+	(test (php_call "password_is_valid" ?user ?pass))
+	=>
+	(retract ?username_args ?password_args ?h ?l)
+	(assert (Guess_Args (uid (php_call "username_to_uid" ?user))))
+)

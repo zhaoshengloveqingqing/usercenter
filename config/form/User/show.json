@@ -1,0 +1,18 @@
+[
+        {
+                "field": "id",
+				"state": "readonly",
+                "label": "ID",
+                "rules": ["required"]
+        },
+        {
+                "field": "status",
+                "label": "Status",
+                "rules": ["required"]
+        },
+        {
+                "field": "create_date",
+                "label": "Create Date",
+				"state": "readonly"
+        }
+]

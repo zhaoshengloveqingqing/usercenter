@@ -1,0 +1,46 @@
+;*******************************************************************************
+;
+; The Rules for mobile login
+;
+; @author Jack
+; @date Sat Dec 20 16:58:37 2014
+;
+;*******************************************************************************
+
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common rules
+(defglobal ?*validation-code* = "validation_code") 
+(defglobal ?*mobile* = "mobile")
+
+;===============================================================================
+;
+; The rules for validation
+;
+;===============================================================================
+
+(defrule update-the-mobile-of-guess-args
+	?m <- (args "mobile" ?mobile)
+	=>
+	(assert (Guess_Args (mobile ?mobile)))
+    (retract ?m)
+)
+
+;===============================================================================
+;
+; The rules for process
+;
+;===============================================================================
+
+(defrule if-we-found-no-one-but-we-have-the-mobile-then-we-need-to-create-user
+	(declare (salience ?*lowest*))
+	(not (Login_User))
+	(Guess_Args (mobile ?mobile))
+	?model <- (Login_Model (uid nil))
+	=>
+	(assert (Login_User (uid (php_call "create_user" ?*mobile* "created" ?mobile))))
+)

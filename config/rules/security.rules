@@ -1,0 +1,32 @@
+(defrule deny-any-action-if-no-match
+	(declare (salience ?*lowest*))
+	?a <- (Action)
+	=>
+	(retract ?a)
+	(assert (operation deny))
+)
+
+(defrule in-development-env-allow-any-action-if-no-match
+	(declare (salience ?*low*))
+	?a <- (Action)
+	(test (eq (constant "ENVIRONMENT") "development"))
+	=>
+	(retract ?a)
+	(assert (operation allow))
+)
+
+(defrule let-form-field-decide-what-to-do-by-default
+	(declare (salience ?*low*))
+	?f <- (FormField)
+	=>
+	(retract ?f)
+	(assert (operation default))
+)
+
+(defrule let-datatable-column-show-by-default
+	(declare (salience ?*low*))
+	?c <- (Column ?)
+	=>
+	(retract ?c)
+	(assert (operation allow))
+)

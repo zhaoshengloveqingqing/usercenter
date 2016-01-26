@@ -1,0 +1,70 @@
+;===============================================================================
+;
+; Constants
+;
+;===============================================================================
+
+(defglobal ?*low* = -100) 
+(defglobal ?*lower* = -500) 
+(defglobal ?*lowest* = -1000) 
+(defglobal ?*high* = 100) 
+(defglobal ?*higher* = 500) 
+(defglobal ?*highest* = 1000) 
+
+(defglobal ?*token_name* = "pinet_token") 
+
+;Store the old callback into the session, so when after the login, can
+;redirect the user to right position
+(defglobal ?*orig_callback* = "pinet_callback") 
+
+(defglobal ?*cookie_expire* = "311040000") 
+
+(deffunction display_error
+	($?msg)
+	(php_call "display_error" $?msg)
+)
+
+(deffunction session_set
+	(?name ?value)
+	(php_call "session_set" ?name ?value)
+)
+
+(deffunction session_get
+	(?name)
+	(php_call "session_get" ?name)
+)
+
+(deffunction session_del
+	(?name)
+	(php_call "session_del" ?name)
+)
+
+(deffunction redirect
+	(?uri)
+	(php_call "redirect" ?uri)
+)
+
+(deffunction cookie_del
+	(?name)
+	(php_call "delete_cookie" ?name)
+)
+
+(deffunction cookie
+	(?name)
+	(php_call "get_cookie" ?name)
+)
+
+(deffunction cookie_set
+	($?args)
+	(php_call "cookie_set" $?args)
+)
+
+(deffunction forward
+	(?name $?args)
+	(php_call "forward" ?name $?args)
+)
+
+(deffunction ci_log
+	(?s $?args)
+	(php_call "ci_log" ?s $?args)
+)

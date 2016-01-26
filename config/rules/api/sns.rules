@@ -1,0 +1,104 @@
+;*******************************************************************************
+;
+; The Rules for sns detail matching
+;
+; @author Jack
+; @date Mon Dec 22 11:49:51 2014
+;
+;*******************************************************************************
+
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common rules
+
+;===============================================================================
+;
+; Misc rules
+;
+;===============================================================================
+
+(defrule if-no-matched-remove-the-detail
+	(declare (salience ?*lower*))
+    ?d <- (detail ? ?)
+    (OAuth_User (oid ~nil))
+    =>
+   (retract ?d)
+)
+
+;===============================================================================
+;
+; QQ rules
+;
+;===============================================================================
+
+(defrule if-has-nickname-update-the-nickname
+	?n <- (detail "nickname" ?nickname)
+	?account <- (OAuth_User (nickname nil))
+	=>
+	(modify ?account (nickname ?nickname))
+	(retract ?n)
+)
+
+(defrule if-has-figureurl_qq_1-update-the-profile-image
+	?i <- (detail "figureurl_qq_1" ?image)
+	?account <- (OAuth_User (profile_image nil))
+	=>
+	(modify ?account (profile_image ?image))
+	(retract ?i)
+)
+
+(defrule if-has-openid-update-the-oid
+	?oid <- (detail "openid" ?openid)
+	?account <- (OAuth_User)
+	=>
+	(modify ?account (oid ?openid))
+	(retract ?oid)
+)
+
+;===============================================================================
+;
+; Weibo rules
+;
+;===============================================================================
+
+(defrule if-has-screen_name-update-the-nickname
+	?n <- (detail "screen_name" ?nickname)
+	?account <- (OAuth_User (nickname nil))
+	=>
+	(modify ?account (nickname ?nickname))
+	(retract ?n)
+)
+
+(defrule if-has-profile_image_url-update-the-profile-image
+	?i <- (detail "profile_image_url" ?image)
+	?account <- (OAuth_User (profile_image nil))
+	=>
+	(modify ?account (profile_image ?image))
+	(retract ?i)
+)
+
+(defrule if-has-idstr-update-the-oid
+	?oid <- (detail "idstr" ?openid)
+	?account <- (OAuth_User)
+	=>
+	(modify ?account (oid ?openid))
+	(retract ?oid)
+)
+
+;===============================================================================
+;
+; Wechat rules
+;
+;===============================================================================
+
+(defrule if-has-headimgurl-update-the-profile-image
+	?i <- (detail "headimgurl" ?image)
+	?account <- (OAuth_User (profile_image nil))
+	=>
+	(modify ?account (profile_image ?image))
+	(retract ?i)
+)

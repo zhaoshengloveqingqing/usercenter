@@ -1,0 +1,27 @@
+[
+    {
+        "field": "mobile",
+        "label": "Phone Number",
+        "placeholder": "",
+        "rules": {
+        }
+    },
+    {
+        "field": "validation_code",
+        "label": "Verify Code",
+        "placeholder": ""
+    },
+    {
+        "field": "username",
+        "label": "Username",
+        "placeholder": "",
+        "rules": ["required"]
+    },
+    {
+        "field": "password",
+        "label": "Password",
+        "placeholder": "",
+        "type": "password",
+        "rules": ["required"]
+    }
+]

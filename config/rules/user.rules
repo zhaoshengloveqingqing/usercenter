@@ -1,0 +1,42 @@
+;===============================================================================
+;
+; The rules for user test and operations
+; 
+; @version 1.0
+; @author Jack <guitarpoet@gmail.com>
+; @date Wed Jan  7 15:29:01 2015
+;
+;===============================================================================
+
+;===============================================================================
+;
+; Dependencies
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules")
+
+;===============================================================================
+;
+; Functions
+;
+;===============================================================================
+
+(defrule if-there-is-token-in-session-then-user-is-logged-in
+	(test (php_call "token_is_valid" (session_get ?*token_name*)))
+	=>
+	(assert (Pinet_User (token (session_get ?*token_name*))))
+)
+
+(defrule if-user-is-not-logged-in-let-him-be-anonymous
+	(test (not (php_call "token_is_valid" (session_get ?*token_name*))))
+	=>
+	(assert (Pinet_Anonymous_User))
+)
+
+(defrule add-groups-if-user-is-logged-in-and-has-function-get-groups
+	(Pinet_User (token ?token&~nil))
+	(not (Pinet_Group))
+	=>
+	(foreach ?g (php_call "get_groups" ?token) (assert (Pinet_Group (name ?g))))
+)

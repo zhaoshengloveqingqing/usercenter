@@ -1,0 +1,8 @@
+{
+	"author": "Jack <jack.fu@pinet.co>",
+	"date": "Mon Dec 15 14:00:42 2014",
+	"version": "1.0",
+	"name": "pinet.login_form",
+	"doc":"The login form widget for doing the login",
+	"depends": ["button", "form", "link"]
+}

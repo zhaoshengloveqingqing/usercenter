@@ -1,0 +1,209 @@
+@mixin section_login_index($args...) {
+	@if $screen-width <= 1280 {
+		$max-screen-width: 1280;
+		overflow-x: hidden;
+		background: #262626;
+		body {
+			.container {
+				padding: 0;
+			}
+			.container {
+				width: 100% !important;
+				height: 100% !important;
+				padding: 0 !important;
+				margin: 0 !important;
+				picture {
+					width: 100%;
+					display: inline-block;
+				}
+				#header {
+					#nav {
+						.dropdown-collpase {
+							a:focus {
+								outline: none;
+								background-color: transparent;
+							}
+						}
+					}
+				}
+				#login-modal {					
+					margin: 0 auto;
+					.modal-dialog {
+						margin: 0 auto;
+						width: minvar(80%, (480:60%, 720: 340px)); 
+						.modal-content {
+							.modal-header {
+								color: #4f6767;
+								border-bottom: none;
+							}
+							.modal-body {
+								width: 100%;
+								display: inline-block;
+								padding-top: 0;
+								padding-bottom: 0;
+								.pinet-form-input {
+									width: 100%;
+									padding: 0;
+								}
+								p {
+									margin: 0;
+								}
+								.forget-password-link {
+									font-size: minvar(14px,16px) !important;
+									color: #bcbcbc;															
+								}
+							}
+							.modal-footer {
+								padding-top: res(26px);
+								border-top: none;
+								.ok, .cancel {
+									font-size: minvar(14px,16px) !important;
+									width: res(154px);
+									height: res(70px);
+									font-size: res(21px);
+									text-shadow: none;
+																		
+								}
+								.ok {
+									float: left;
+								}
+							}
+						}
+					}
+					.modal-dialog {
+						.modal-content {
+							.modal-body {
+								.pinet-form-input {
+									input {
+										box-shadow: none;
+									}
+								}
+							}
+							.modal-header {
+								.prompt-message {
+									margin: 5px 0px;
+									color: #f00;
+									font-size: minvar(14px,16px) !important;
+									font-size: res(25px);
+									// @media (max-width: 430px) {
+									// 	font-size: res(50px);
+									// }
+								}
+							}
+						}
+					}
+				}
+				.container-mask {
+					position: fixed;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					background-color: rgba(0, 0, 0, 0.6);
+					display: none;
+					z-index: 1000;
+				}
+			}
+		}
+	}
+	@else {
+		$max-screen-width: 2880;
+		.container {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			picture {
+				display: inline-block;
+			}
+			#header {
+				#nav {
+					.dropdown-collpase {
+						a:focus {
+							outline: none;
+							background-color: transparent;
+						}
+					}
+				}
+			}
+			#login-modal {				
+				margin: 0 auto;
+				.modal-dialog {
+				width: res(650px);
+				height: res(340px);
+					// margin: 0 auto;
+					.modal-content {
+						// box-shadow: none;
+						.modal-header {
+							color: #4f6767;
+							border-bottom: none;
+						}
+						.modal-body {
+							width: 100%;
+							display: inline-block;
+							padding-top: 0;
+							padding-bottom: 0;
+							.pinet-form-input {
+								width: 100%;
+								padding: 0;
+							}
+							p {
+								margin: 0;
+							}
+							.forget-password-link {
+								font-size: res(21px);
+								color: #bcbcbc;
+							}
+						}
+						.modal-footer {
+							padding-top: res(26px);
+							border-top: none;
+							.ok, .cancel {
+								width: res(154px);
+								height: res(70px);
+								font-size: res(21px);
+							}
+							.ok {
+								float: left;
+							}
+						}
+					}
+				}
+				.modal-dialog {
+					.modal-content {
+						.modal-body {
+							.pinet-form-input {
+								input {
+									box-shadow: none;
+								}
+							}
+						}
+						.modal-header {
+							.prompt-message {
+								margin: 5px 0px;
+								color: #f00;
+								font-size: res(25px);
+							}
+						}
+					}
+				}
+			}		
+
+			form {
+				ul > li{
+					margin-top: res(30px);
+					input.form-control {
+						// .res(610px,70px);
+						width: res(610px);
+						height: res(70px);
+					}
+				}
+				.btn-send-request {
+					input{
+						width: res(415px);
+						height: res(90px);
+					}
+				}
+			}
+		}
+		
+	}
+}

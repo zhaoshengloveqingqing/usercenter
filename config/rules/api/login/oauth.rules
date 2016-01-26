@@ -1,0 +1,59 @@
+;*******************************************************************************
+;
+; The Rules for oauth processing
+;
+; @author Jack
+; @date Sat Dec 20 18:25:04 2014
+;
+;*******************************************************************************
+
+;===============================================================================
+;
+; Global function and constants
+;
+;===============================================================================
+
+(load-rules "application/config/rules/common.rules") ; Load the common rules
+
+;===============================================================================
+;
+; The rules for validation
+;
+;===============================================================================
+
+(defrule if-has-the-oauth-details-process-the-details
+	?args <- (args "oauth_details" ?details)
+	=>
+	(retract ?args)
+	(php_call "process_details" ?details)
+)
+
+(defrule update-the-type-of-guess-args
+	?args <- (Guess_Args (type nil))
+	(args "oauth_type" ?type&~nil)
+	=>
+	(modify ?args (type ?type))
+)
+
+(defrule generate-guess-args-using-oauth-informations
+	?l <- (detail "details" ?details)
+	=>
+	(assert (Guess_Args (detail ?details)))
+	(retract ?l)
+)
+
+;===============================================================================
+;
+; The rules for process
+;
+;===============================================================================
+
+(defrule if-we-found-no-one-but-we-have-the-oauth-user-we-need-to-create-one
+	(declare (salience ?*lowest*))
+	(not (Login_User))
+	(OAuth_User (oid ?oid&~nil) (detail ~nil) (type ?type&~nil))
+	?model <- (Login_Model (uid nil))
+	=>
+	(assert (Login_User (uid (php_call "create_user" "oauth" "created" ?type ?oid))))
+)
+

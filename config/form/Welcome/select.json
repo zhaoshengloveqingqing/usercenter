@@ -1,0 +1,23 @@
+[
+	{
+		"field": "province",
+		"label": "Province",
+		"model" : "place_model",
+		"value_col": "name",
+		"filters": {
+			"type": 1
+		}
+	},
+	{
+		"field": "city",
+		"label": "City",
+		"model" : "place_model",
+		"value_col": "name",
+		"filters": {
+			"type": 2,
+			"parent_id": {
+				"field": "province"
+			}
+		}
+	}
+]
